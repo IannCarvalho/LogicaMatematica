@@ -44,6 +44,18 @@ fact umFilmeEmCadaSet{
 --   FUNÇÕES (Mínimo 3) 
 --------------------------------------------------------------------------------------
 
+fun filmesQueAtorParticipou [c : Cpf] : set Filme {
+	(c.~cpf & Ator).~atores
+}
+
+fun filmesDeDiretor [c: Cpf] : set Filme {
+	diretorDoCpf [c].filmes
+}
+
+fun diretorDoCpf [c: Cpf] : one Diretor {
+	c.~cpf & Diretor
+}
+
 --------------------------------------------------------------------------------------
 --   ASSERTS  (Mínimo 3 definições e 3 verificações) 
 --------------------------------------------------------------------------------------
@@ -60,10 +72,23 @@ assert testeUmCpfPorPessoa{
 
 check testeUmCpfPorPessoa
 
+assert testeDiretorDoCpf {
+	all d:Diretor | d = diretorDoCpf[d.cpf]
+}
+
+check testeDiretorDoCpf
+
+assert testeFilmesDeDiretor{
+	all d:Diretor | d.filmes = filmesDeDiretor[d.cpf]
+}
+check testeFilmesDeDiretor
+
+
 --------------------------------------------------------------------------------------
 --   SHOW 
 --------------------------------------------------------------------------------------
 
-pred show[]{}
+pred show[]{#Ator > 3
+}
 
 run show
