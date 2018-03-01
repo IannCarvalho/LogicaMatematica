@@ -28,6 +28,10 @@ sig LongaMetragem extends Filme{}
 --   FATOS 
 --------------------------------------------------------------------------------------
 
+fact umCpfPorPessoa{
+	all c:Cpf | one c.~cpf
+}
+
 --------------------------------------------------------------------------------------
 --   PREDICADOS (Mínimo 3) 
 --------------------------------------------------------------------------------------
@@ -45,6 +49,12 @@ assert testeFilmeSemAtor{
 }
 
 check testeFilmeSemAtor
+
+assert testeUmCpfPorPessoa{
+	all c:Cpf | #(c.~cpf) = 1
+}
+
+check testeUmCpfPorPessoa
 
 --------------------------------------------------------------------------------------
 --   SHOW 
