@@ -32,6 +32,10 @@ fact umCpfPorPessoa{
 	all c:Cpf | one c.~cpf
 }
 
+fact umFilmeEmCadaSet{
+	all f:Filme | one f.~filmes and f.~filmes = f.diretor
+}
+
 --------------------------------------------------------------------------------------
 --   PREDICADOS (Mínimo 3) 
 --------------------------------------------------------------------------------------
