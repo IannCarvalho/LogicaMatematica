@@ -29,16 +29,42 @@ sig LongaMetragem extends Filme{}
 --------------------------------------------------------------------------------------
 
 fact umCpfPorPessoa{
-	all c:Cpf | one c.~cpf
+	all c:Cpf |  cpfPorPessoa[c]
 }
 
-fact umFilmeEmCadaSet{
-	all f:Filme | one f.~filmes and f.~filmes = f.diretor
+fact umFilmeUmDireto{
+	all f:Filme | relacaoBidirecionalDeFilmeEDiretor[f]
 }
 
 --------------------------------------------------------------------------------------
 --   PREDICADOS (Mínimo 3) 
 --------------------------------------------------------------------------------------
+
+--  PREDICADOS PARA FATOS
+
+pred relacaoBidirecionalDeFilmeEDiretor [f : Filme] {
+	one f.~filmes and f.~filmes = f.diretor
+}
+
+pred cpfPorPessoa [c : Cpf]{
+	one c.~cpf
+}
+
+--  PREDICADOS PARA ASSERTS
+
+pred maisDeUmAtor [f : Filme] {
+	#(f.atores) > 0
+}
+
+pred numeroDeCpfEhUm [c : Cpf]{
+	#(c.~cpf) = 1
+}
+
+pred doisFilmesOuMenos [c : Cpf]{
+	#(filmesDoAtor[c]) <= 2
+}
+
+
 
 --------------------------------------------------------------------------------------
 --   FUNÇÕES (Mínimo 3) 
@@ -47,16 +73,15 @@ fact umFilmeEmCadaSet{
 fun filmesDoAtor [c : Cpf] : set Filme {
 	atorDoCpf[c].~atores
 }
-
-fun atorDoCpf [c: Cpf] : one Ator{ 
+fun atorDoCpf [c : Cpf] : one Ator{ 
 	c.~cpf & Ator
 }
 
-fun filmesDeDiretor [c: Cpf] : set Filme {
+fun filmesDeDiretor [c : Cpf] : set Filme {
 	diretorDoCpf[c].filmes
 }
 
-fun diretorDoCpf [c: Cpf] : one Diretor {
+fun diretorDoCpf [c : Cpf] : one Diretor {
 	c.~cpf & Diretor
 }
 
@@ -65,34 +90,34 @@ fun diretorDoCpf [c: Cpf] : one Diretor {
 --------------------------------------------------------------------------------------
 
 assert testeFilmeSemAtor{
-	all f:Filme | #(f.atores) > 0
+	all f:Filme | maisDeUmAtor[f]
 }
 
 check testeFilmeSemAtor for 20
 
 assert testeUmCpfPorPessoa{
-	all c:Cpf | #(c.~cpf) = 1
+	all c : Cpf | numeroDeCpfEhUm[c]
 }
 
 check testeUmCpfPorPessoa for 20
 
 assert testeDiretorDoCpf {
-	all d:Diretor | d = diretorDoCpf[d.cpf]
+	all d : Diretor | d = diretorDoCpf[d.cpf]
 }
 
 check testeDiretorDoCpf for 20
 
 assert testeFilmesDeDiretor{
-	all d:Diretor | d.filmes = filmesDeDiretor[d.cpf]
+	all d : Diretor | d.filmes = filmesDeDiretor[d.cpf]
 }
 
 check testeFilmesDeDiretor for 20
 
 assert testeFilmesDoAtor{
-	all c:Cpf | #(filmesDoAtor[c]) = 2
+	all c : Cpf | doisFilmesOuMenos[c]
 }
 
-check testeFilmesDoAtor for 2
+check testeFilmesDoAtor for exactly 2 Filme, 1 Cpf, 1 Pessoa
 
 
 --------------------------------------------------------------------------------------
