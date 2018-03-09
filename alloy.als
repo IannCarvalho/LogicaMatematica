@@ -67,11 +67,6 @@ pred numeroDeCpfEhUm [c : Cpf] {
 	#(c.~cpf) = 1
 }
 
-pred doisFilmesOuMenos [c : Cpf] {
-	#(filmesDoAtor[c]) <= 2
-}
-
-
 --------------------------------------------------------------------------------------
 --   FUNÇÕES (Mínimo 3) 
 --------------------------------------------------------------------------------------
@@ -122,12 +117,6 @@ assert testeFilmesDeDiretor {
 }
 
 check testeFilmesDeDiretor for 20
-
-assert testeFilmesDoAtor {
-	all c : Cpf | doisFilmesOuMenos[c]
-}
-
-check testeFilmesDoAtor for exactly 2 Filme, 1 Cpf, 1 Pessoa
 
 
 ---------------------------------------------------------------------------------------------------
