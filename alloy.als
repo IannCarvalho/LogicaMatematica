@@ -59,7 +59,7 @@ pred cpfPorPessoa [c : Cpf] {
 
 --  PREDICADOS PARA ASSERTS
 
-pred maisDeUmAto [f : Filme] {
+pred umAtorOuMais [f : Filme] {
 	#(f.atores) > 0
 }
 
@@ -100,7 +100,7 @@ fun diretorDoCpf [c : Cpf] : one Diretor {
 
 
 assert testeFilmeSemAtor {
-	all f:Filme | maisDeUmAtor[f]
+	all f:Filme | umAtorOuMais[f]
 }
 
 check testeFilmeSemAtor for 20
