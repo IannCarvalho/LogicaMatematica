@@ -6,7 +6,7 @@ module controleDeFilmes
 ---------------------------------------------------------------------------------------------------
 
 
-sig Cpf{}
+sig Cpf {}
 
 abstract sig Pessoa {
 	cpf: one Cpf
@@ -23,9 +23,9 @@ abstract sig Filme {
 	atores: some Ator
 }
 
-sig CurtaMetragem extends Filme{}
-sig MediaMetragem extends Filme{}
-sig LongaMetragem extends Filme{}
+sig CurtaMetragem extends Filme {}
+sig MediaMetragem extends Filme {}
+sig LongaMetragem extends Filme {}
 
 
 ---------------------------------------------------------------------------------------------------
@@ -33,11 +33,11 @@ sig LongaMetragem extends Filme{}
 ---------------------------------------------------------------------------------------------------
 
 
-fact umCpfPorPessoa{
-	all c:Cpf |  cpfPorPessoa[c]
+fact umCpfPorPessoa {
+	all c:Cpf | cpfPorPessoa[c]
 }
 
-fact umFilmeUmDireto{
+fact umFilmeUmDiretor {
 	all f:Filme | relacaoBidirecionalDeFilmeEDiretor[f]
 }
 
@@ -53,21 +53,21 @@ pred relacaoBidirecionalDeFilmeEDiretor [f : Filme] {
 	one f.~filmes and f.~filmes = f.diretor
 }
 
-pred cpfPorPessoa [c : Cpf]{
+pred cpfPorPessoa [c : Cpf] {
 	one c.~cpf
 }
 
 --  PREDICADOS PARA ASSERTS
 
-pred maisDeUmAtor [f : Filme] {
+pred maisDeUmAto [f : Filme] {
 	#(f.atores) > 0
 }
 
-pred numeroDeCpfEhUm [c : Cpf]{
+pred numeroDeCpfEhUm [c : Cpf] {
 	#(c.~cpf) = 1
 }
 
-pred doisFilmesOuMenos [c : Cpf]{
+pred doisFilmesOuMenos [c : Cpf] {
 	#(filmesDoAtor[c]) <= 2
 }
 
@@ -80,7 +80,8 @@ pred doisFilmesOuMenos [c : Cpf]{
 fun filmesDoAtor [c : Cpf] : set Filme {
 	atorDoCpf[c].~atores
 }
-fun atorDoCpf [c : Cpf] : one Ator{ 
+
+fun atorDoCpf [c : Cpf] : one Ator { 
 	c.~cpf & Ator
 }
 
@@ -98,13 +99,13 @@ fun diretorDoCpf [c : Cpf] : one Diretor {
 ---------------------------------------------------------------------------------------------------
 
 
-assert testeFilmeSemAtor{
+assert testeFilmeSemAtor {
 	all f:Filme | maisDeUmAtor[f]
 }
 
 check testeFilmeSemAtor for 20
 
-assert testeUmCpfPorPessoa{
+assert testeUmCpfPorPessoa {
 	all c : Cpf | numeroDeCpfEhUm[c]
 }
 
@@ -116,13 +117,13 @@ assert testeDiretorDoCpf {
 
 check testeDiretorDoCpf for 20
 
-assert testeFilmesDeDiretor{
+assert testeFilmesDeDiretor {
 	all d : Diretor | d.filmes = filmesDeDiretor[d.cpf]
 }
 
 check testeFilmesDeDiretor for 20
 
-assert testeFilmesDoAtor{
+assert testeFilmesDoAtor {
 	all c : Cpf | doisFilmesOuMenos[c]
 }
 
@@ -133,6 +134,6 @@ check testeFilmesDoAtor for exactly 2 Filme, 1 Cpf, 1 Pessoa
 --   SHOW 
 ---------------------------------------------------------------------------------------------------
 
-pred show[]{}
+pred show[] {}
 
 run show for 8
